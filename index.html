@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DialogX — Login</title>
 
-  <!-- Fonte Poppins para o texto DialogX -->
+  <!-- GOOGLE LOGIN -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-dark: #6217A8;   /* Fundo roxo escuro (desktop) */
-      --bg-light: #DDE1FF;  /* Fundo roxo claro (mobile) */
+      --bg-dark: #6217A8;  
+      --bg-light: #DDE1FF;  
       --input-border: #7A1FBF;
       --btn-bg: #7A1FBF;
       --btn-hover: #61169A;
@@ -24,7 +26,7 @@
       height: 100%;
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-dark); /* Fundo escuro padrão (notebook) */
+      background-color: var(--bg-dark); 
       display: flex;
       justify-content: center;
       align-items: center;
@@ -59,23 +61,28 @@
       object-fit: contain;
       background-color: transparent;
       margin-left: -25px; 
-      display: block;
     }
 
     .card-header span {
       font-size: 24px;
       font-weight: 700;
       color: #7011B3;
-      letter-spacing: -0.4px;
-      margin-left: -5px; 
+      margin-left: -5px;
     }
 
     h1 {
       color: var(--text-dark);
       font-size: 22px;
-      margin: 10px 0 25px;
+      margin: 10px 0 20px;
       text-align: center;
       width: 100%;
+    }
+
+    .google-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
     }
 
     .input {
@@ -88,19 +95,12 @@
       outline: none;
       color: var(--text-dark);
       box-sizing: border-box;
-      display: block;
-    }
-
-    .input::placeholder {
-      color: #7A1FBF;
-      opacity: 0.8;
     }
 
     .error-message {
       color: var(--error);
       font-size: 13px;
       margin-bottom: 10px;
-      text-align: left;
       width: 100%;
       display: none;
     }
@@ -109,11 +109,6 @@
       font-weight: 700;
       color: var(--text-dark);
       margin-top: 10px;
-      text-align: center;
-      width: 100%;
-    }
-
-    .forgot-options {
       text-align: center;
       width: 100%;
     }
@@ -131,7 +126,7 @@
       display: flex;
       justify-content: space-between;
       width: 100%;
-      margin-top: 30px;
+      margin-top: 20px;
       gap: 10px;
     }
 
@@ -151,43 +146,12 @@
     .btn:hover {
       background-color: var(--btn-hover);
     }
-
-
-    @media (max-width: 768px) {
-      body {
-        background-color: var(--bg-light); 
-      }
-
-      .card {
-        width: 90%;
-        padding: 0 20px 30px;
-        box-shadow: none; 
-      }
-
-      .card-header img.logo {
-        width: 90px;
-        height: 90px;
-        margin-left: -15px;
-      }
-
-      .card-header span {
-        font-size: 22px;
-        margin-left: -5px;
-      }
-
-      h1 {
-        font-size: 20px;
-      }
-
-      .btn {
-        font-size: 15px;
-      }
-    }
   </style>
 </head>
 
 <body>
   <div class="card">
+
     <div class="card-header">
       <img src="logo.jpeg" alt="Logo DialogX" class="logo">
       <span>DialogX</span>
@@ -195,13 +159,32 @@
 
     <h1>Entrar na conta</h1>
 
-    <input id="empresa" class="input" type="text" placeholder="Nome da empresa" />
+    <!-- LOGIN GOOGLE -->
+    <div id="g_id_onload"
+         data-client_id="215071237900-0ht7arb9ai46od13siqdrcr1nj5jcbte.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-callback="onGoogleLogin">
+    </div>
+
+    <div class="google-container">
+      <div class="g_id_signin"
+           data-type="standard"
+           data-shape="rectangular"
+           data-theme="outline"
+           data-text="signin_with"
+           data-size="large">
+      </div>
+    </div>
+
+    <!-- CAMPOS NORMAIS -->
+    <input id="empresa" class="input" type="text" placeholder="Nome da empresa">
     <div id="erro-empresa" class="error-message">⚠️ Campo obrigatório.</div>
 
-    <input id="cnpj" class="input" type="text" placeholder="CNPJ" />
+    <input id="cnpj" class="input" type="text" placeholder="CNPJ">
     <div id="erro-cnpj" class="error-message">⚠️ Campo obrigatório.</div>
 
-    <input id="senha" class="input" type="password" placeholder="Senha" />
+    <input id="senha" class="input" type="password" placeholder="Senha">
     <div id="erro-senha" class="error-message">⚠️ Campo obrigatório.</div>
 
     <div class="forgot">Esqueceu a senha?</div>
@@ -214,40 +197,52 @@
       <button class="btn" type="button" onclick="voltar()">voltar</button>
       <button class="btn" type="button" onclick="validarCampos()">próximo</button>
     </div>
+
   </div>
 
-  <script>
-    function validarCampos() {
-      const campos = [
-        { id: "empresa", erro: "erro-empresa" },
-        { id: "cnpj", erro: "erro-cnpj" },
-        { id: "senha", erro: "erro-senha" }
-      ];
+<script>
+  // LOGIN GOOGLE CALLBACK
+  function onGoogleLogin(response) {
+    const token = response.credential;
+    console.log("Token Google:", token);
 
-      let valido = true;
+    alert("✔ Login com Google realizado!");
+    // aqui você pode redirecionar:
+    // window.location.href = "home.html";
+  }
 
-      campos.forEach(campo => {
-        const input = document.getElementById(campo.id);
-        const erro = document.getElementById(campo.erro);
+  function validarCampos() {
+    const campos = [
+      { id: "empresa", erro: "erro-empresa" },
+      { id: "cnpj", erro: "erro-cnpj" },
+      { id: "senha", erro: "erro-senha" }
+    ];
 
-        if (input.value.trim() === "") {
-          erro.style.display = "block";
-          input.style.borderColor = "#d9534f";
-          valido = false;
-        } else {
-          erro.style.display = "none";
-          input.style.borderColor = "var(--input-border)";
-        }
-      });
+    let valido = true;
 
-      if (valido) {
-        alert("✅ Todos os campos foram preenchidos!");
+    campos.forEach(campo => {
+      const input = document.getElementById(campo.id);
+      const erro = document.getElementById(campo.erro);
+
+      if (input.value.trim() === "") {
+        erro.style.display = "block";
+        input.style.borderColor = "#d9534f";
+        valido = false;
+      } else {
+        erro.style.display = "none";
+        input.style.borderColor = "var(--input-border)";
       }
-    }
+    });
 
-    function voltar() {
-      alert("Voltando para a tela anterior...");
+    if (valido) {
+      alert("✅ Todos os campos foram preenchidos!");
     }
-  </script>
+  }
+
+  function voltar() {
+    alert("Voltando para a tela anterior...");
+  }
+</script>
+
 </body>
 </html>
