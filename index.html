@@ -143,14 +143,15 @@
       background-color: var(--btn-hover);
     }
 
-    /* 🔹 QUANDO INSPECIONAR / MOBILE */
+    /* 🔹 MOBILE / INSPECIONAR */
     @media (max-width: 768px) {
-      body {
-        background-color: var(--bg-light);
+      html, body {
+        background-color: var(--bg-light); /* REMOVE o roxo escuro */
         align-items: flex-start;
       }
 
       .card {
+        background-color: var(--bg-light);
         width: 100%;
         max-width: 100%;
         min-height: 100vh;
