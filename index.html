@@ -26,7 +26,7 @@
       height: 100%;
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-dark); 
+      background-color: var(--bg-dark);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -37,7 +37,7 @@
       width: 520px;
       max-width: 90%;
       border-radius: 12px;
-      padding: 0 40px 40px 40px;
+      padding: 0 40px 40px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.25);
       display: flex;
       flex-direction: column;
@@ -48,10 +48,9 @@
     .card-header {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
       width: 100%;
       gap: 8px;
-      padding: 25px 0 20px 0;
+      padding: 25px 0 20px;
       margin-bottom: 20px;
     }
 
@@ -59,8 +58,7 @@
       width: 110px;
       height: 110px;
       object-fit: contain;
-      background-color: transparent;
-      margin-left: -25px; 
+      margin-left: -25px;
     }
 
     .card-header span {
@@ -94,7 +92,6 @@
       margin-bottom: 8px;
       outline: none;
       color: var(--text-dark);
-      box-sizing: border-box;
     }
 
     .error-message {
@@ -120,11 +117,11 @@
       display: block;
       margin: 6px 0;
       font-size: 14px;
+      text-align: center;
     }
 
     .buttons {
       display: flex;
-      justify-content: space-between;
       width: 100%;
       margin-top: 20px;
       gap: 10px;
@@ -140,11 +137,27 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
     }
 
     .btn:hover {
       background-color: var(--btn-hover);
+    }
+
+    /* 🔹 QUANDO INSPECIONAR / MOBILE */
+    @media (max-width: 768px) {
+      body {
+        background-color: var(--bg-light);
+        align-items: flex-start;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 20px;
+      }
     }
   </style>
 </head>
@@ -159,7 +172,7 @@
 
     <h1>Entrar na conta</h1>
 
-    <!-- LOGIN GOOGLE -->
+    <!-- GOOGLE LOGIN -->
     <div id="g_id_onload"
          data-client_id="215071237900-0ht7arb9ai46od13siqdrcr1nj5jcbte.apps.googleusercontent.com"
          data-context="signin"
@@ -177,7 +190,6 @@
       </div>
     </div>
 
-    <!-- CAMPOS NORMAIS -->
     <input id="empresa" class="input" type="text" placeholder="Nome da empresa">
     <div id="erro-empresa" class="error-message">⚠️ Campo obrigatório.</div>
 
@@ -194,21 +206,15 @@
     </div>
 
     <div class="buttons">
-      <button class="btn" type="button" onclick="voltar()">voltar</button>
-      <button class="btn" type="button" onclick="validarCampos()">próximo</button>
+      <button class="btn" onclick="voltar()">voltar</button>
+      <button class="btn" onclick="validarCampos()">próximo</button>
     </div>
 
   </div>
 
 <script>
-  // LOGIN GOOGLE CALLBACK
   function onGoogleLogin(response) {
-    const token = response.credential;
-    console.log("Token Google:", token);
-
     alert("✔ Login com Google realizado!");
-    // aqui você pode redirecionar:
-    // window.location.href = "home.html";
   }
 
   function validarCampos() {
@@ -220,27 +226,25 @@
 
     let valido = true;
 
-    campos.forEach(campo => {
-      const input = document.getElementById(campo.id);
-      const erro = document.getElementById(campo.erro);
+    campos.forEach(c => {
+      const i = document.getElementById(c.id);
+      const e = document.getElementById(c.erro);
 
-      if (input.value.trim() === "") {
-        erro.style.display = "block";
-        input.style.borderColor = "#d9534f";
+      if (!i.value.trim()) {
+        e.style.display = "block";
+        i.style.borderColor = "#d9534f";
         valido = false;
       } else {
-        erro.style.display = "none";
-        input.style.borderColor = "var(--input-border)";
+        e.style.display = "none";
+        i.style.borderColor = "var(--input-border)";
       }
     });
 
-    if (valido) {
-      alert("✅ Todos os campos foram preenchidos!");
-    }
+    if (valido) alert("✅ Todos os campos preenchidos!");
   }
 
   function voltar() {
-    alert("Voltando para a tela anterior...");
+    history.back();
   }
 </script>
 
